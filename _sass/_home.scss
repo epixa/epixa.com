@@ -10,6 +10,14 @@
     width: 5em;
     height: 5em;
   }
+
+  > hgroup {
+    // begin hack for safari
+    // prevents headshot from scaling on mid-sized resolutions
+    flex-shrink: 0;
+    flex-basis: calc(100% - 5em);
+    // end hack for safari
+  }
 }
 
 @media only screen and (min-width: 34em) {
