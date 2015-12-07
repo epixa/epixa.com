@@ -1,0 +1,45 @@
+/**
+ * # defaults
+ */
+
+body {
+  background: #222 url("../img/use_your_illusion.png"); /* http://subtlepatterns.com/use-your-illusion/ */
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -moz-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+.page {
+  background-color: #fff;
+  margin: 0 auto;
+  max-width: 68em;
+}
+
+/**
+ * Images
+ */
+img {
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+/**
+ * Icons
+ */
+.icon {
+  > svg {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+
+    path {
+      fill: #828282;
+    }
+  }
+}
+
+// page setup
+// fonts
+// colors
+// vertical flow

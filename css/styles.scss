@@ -1,0 +1,27 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+@charset "utf-8";
+
+
+// Import partials from `sass_dir` (defaults to `_sass`)
+@import
+  "reset",
+  "grid",
+  "defaults",
+  "home",
+  "document"
+;
+
+
+.page > header {
+  background-color: pink;
+}
+
+.page > aside {
+  background-color: #ddd;
+}
+
+.page > section {
+  background-color: #ccc;
+}
