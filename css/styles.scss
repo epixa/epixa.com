@@ -19,8 +19,8 @@ $content-bg-color:  #fff;
 $red-color:         #ff4b46;
 
 $grey-color:        #828282;
-$grey-color-light:  lighten($grey-color, 25%);
-$grey-color-dark:   darken($grey-color, 25%);
+$grey-color-light:  lighten($grey-color, 16%);
+$grey-color-dark:   darken($grey-color, 16%);
 
 $max-content-width: 68em;
 
@@ -50,11 +50,6 @@ $on-laptop:         54em;
   "home",
   "document"
 ;
-
-
-.page > aside {
-  background-color: #ddd;
-}
 
 .page > section {
   background-color: #ccc;

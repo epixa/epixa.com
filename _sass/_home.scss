@@ -82,6 +82,8 @@ $left-col-heading-color: #6f6f6f;
     color: $red-color;
   }
 
+  .icon > svg { vertical-align: -0.15em; }
+
   @include media-query($on-tablet) {
     li { float: left; min-width: $min-social-col-width; }
     li:nth-child(even) { width: calc(100% - #{$min-social-col-width}); }

@@ -20,6 +20,59 @@ body {
   max-width: $max-content-width;
 }
 
+aside {
+  color: $grey-color;
+
+  h1 {
+    color: $grey-color;
+    font-size: 1.5em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  a {
+    color: $grey-color;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: $red-color;
+
+    .icon > svg path { fill: $red-color; }
+  }
+
+  a.more {
+    float: right;
+    font-size: 0.9em;
+    padding-left: 0.5em;
+
+    .icon > svg {
+      height: 0.5em;
+      vertical-align: 0.05em;
+      width: 0.5em;
+    }
+  }
+
+  a.more:not(:hover) {
+    color: $grey-color-light;
+  }
+
+  ul {
+    list-style: none;
+
+    li {
+      clear: both;
+
+      a {
+        float: right;
+        width: calc(100% - 1em);
+      }
+
+      .icon.icon-small > svg { vertical-align: baseline; }
+    }
+  }
+}
+
 /**
  * Images
  */
@@ -34,13 +87,20 @@ img {
 .icon {
   > svg {
     display: inline-block;
-    width: 1em;
     height: 1em;
     vertical-align: middle;
+    width: 1em;
 
     path {
-      fill: $grey-color;
+      fill: $grey-color-light;
     }
+  }
+}
+
+.icon.icon-small {
+  > svg {
+    height: 0.7em;
+    width: 0.7em;
   }
 }
 
