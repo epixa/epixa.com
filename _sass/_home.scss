@@ -2,35 +2,87 @@
  * # home
  */
 
+
+$headshot-dimension:   4.5em;
+$min-left-col-width:   20em;
+$min-social-col-width: 15em;
+
+// todo: make this more universal
+$left-col-heading-color: #6f6f6f;
+
+
 .me {
+  align-items: center;
   display: flex;
   flex-direction: row;
+  padding-bottom: $spacing-unit / 4;
 
   > img {
-    width: 5em;
-    height: 5em;
+    width: $headshot-dimension;
+    height: $headshot-dimension;
+    flex-shrink: 0;
   }
 
   > hgroup {
     // begin hack for safari
     // prevents headshot from scaling on mid-sized resolutions
     flex-shrink: 0;
-    flex-basis: calc(100% - 5em);
+
     // end hack for safari
+
+    line-height: 1.2;
+    padding-left: $spacing-unit / 2;
+  }
+
+  h1, h2 {
+    color: $left-col-heading-color;
+
+    a {
+      color: $left-col-heading-color;
+      text-decoration: none;
+    }
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 1em;
+    font-weight: normal;
   }
 }
 
-@media only screen and (min-width: 34em) {
-  .page > header > .row > .col {
-    width: 50%;
+.social-list {
+  list-style: none;
+
+  a {
+    color: $grey-color;
+    font-size: $small-font-size;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: $red-color;
   }
 }
 
-@media only screen and (min-width: 54em) {
-  .page > header > .row > .col {
-    width: 100%;
+@include media-query($on-tablet) {
+  .social-list {
+    li { float: left; min-width: $min-social-col-width; }
+    li:nth-child(even) { width: calc(100% - #{$min-social-col-width}); }
   }
-  .page > header.col { width: 30%; }
-  .page > section.col { width: 70%; float: right; }
-  .page > aside.col { width: 30%; clear: left; }
+}
+
+@include media-query($on-laptop) {
+  .social-list {
+    li, li:nth-child(even) { float: none; width: 100%; }
+  }
+
+  .page {
+    > header.col { width: $min-left-col-width; }
+    > section.col { float: right; width: calc(100% - #{$min-left-col-width}); }
+    > aside.col { clear: left; width: $min-left-col-width; }
+  }
 }

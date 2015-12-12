@@ -2,9 +2,14 @@
  * # defaults
  */
 
+%vertical-rhythm {
+  margin-bottom: $spacing-unit / 2;
+}
+
 body {
-  background: #222 url("../img/use_your_illusion.png"); /* http://subtlepatterns.com/use-your-illusion/ */
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: $bg-color url("../img/use_your_illusion.png"); /* http://subtlepatterns.com/use-your-illusion/ */
+  color: $text-color;
+  font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family;
   -moz-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -12,7 +17,7 @@ body {
 .page {
   background-color: #fff;
   margin: 0 auto;
-  max-width: 68em;
+  max-width: $max-content-width;
 }
 
 /**
