@@ -15,7 +15,7 @@ body {
 }
 
 .page {
-  background-color: #fff;
+  background-color: $content-bg-color;
   margin: 0 auto;
   max-width: $max-content-width;
 }
@@ -39,7 +39,7 @@ img {
     vertical-align: middle;
 
     path {
-      fill: #828282;
+      fill: $grey-color;
     }
   }
 }

@@ -10,7 +10,20 @@ $min-social-col-width: 15em;
 // todo: make this more universal
 $left-col-heading-color: #6f6f6f;
 
+/**
+ * Page
+ */
+.page {
+  @include media-query($on-laptop) {
+    > header.col { width: $min-left-col-width; }
+    > section.col { float: right; width: calc(100% - #{$min-left-col-width}); }
+    > aside.col { clear: left; width: $min-left-col-width; }
+  }
+}
 
+/**
+ * Me / Main header
+ */
 .me {
   align-items: center;
   display: flex;
@@ -18,16 +31,15 @@ $left-col-heading-color: #6f6f6f;
   padding-bottom: $spacing-unit / 4;
 
   > img {
-    width: $headshot-dimension;
-    height: $headshot-dimension;
     flex-shrink: 0;
+    height: $headshot-dimension;
+    width: $headshot-dimension;
   }
 
   > hgroup {
     // begin hack for safari
     // prevents headshot from scaling on mid-sized resolutions
     flex-shrink: 0;
-
     // end hack for safari
 
     line-height: 1.2;
@@ -53,6 +65,9 @@ $left-col-heading-color: #6f6f6f;
   }
 }
 
+/**
+ * Social links
+ */
 .social-list {
   list-style: none;
 
@@ -66,23 +81,13 @@ $left-col-heading-color: #6f6f6f;
   a:hover {
     color: $red-color;
   }
-}
 
-@include media-query($on-tablet) {
-  .social-list {
+  @include media-query($on-tablet) {
     li { float: left; min-width: $min-social-col-width; }
     li:nth-child(even) { width: calc(100% - #{$min-social-col-width}); }
   }
-}
 
-@include media-query($on-laptop) {
-  .social-list {
+  @include media-query($on-laptop) {
     li, li:nth-child(even) { float: none; width: 100%; }
-  }
-
-  .page {
-    > header.col { width: $min-left-col-width; }
-    > section.col { float: right; width: calc(100% - #{$min-left-col-width}); }
-    > aside.col { clear: left; width: $min-left-col-width; }
   }
 }
