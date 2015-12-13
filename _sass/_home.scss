@@ -3,7 +3,7 @@
  */
 
 
-$headshot-dimension:   4.5em;
+$headshot-dimension:   4em;
 $min-left-col-width:   20em;
 $min-social-col-width: 15em;
 
@@ -14,10 +14,32 @@ $left-col-heading-color: #6f6f6f;
  * Page
  */
 .page {
+  > header.col, > aside.col, > section.col {
+    margin-bottom: $spacing-unit;
+  }
+
+  aside.block {
+    text-align: justify;
+  }
+
   @include media-query($on-laptop) {
-    > header.col { width: $min-left-col-width; }
-    > section.col { float: right; width: calc(100% - #{$min-left-col-width}); }
-    > aside.col { clear: left; width: $min-left-col-width; }
+    padding-bottom: 2.5em - $spacing-unit;
+    padding-top: 2.5em;
+
+    > header.col {
+      padding-left: 2.5em;
+      width: $min-left-col-width;
+    }
+    > section.col {
+      float: right;
+      padding-right: 2.5em;
+      width: calc(100% - #{$min-left-col-width});
+    }
+    > aside.col {
+      clear: left;
+      padding-left: 2.5em;
+      width: $min-left-col-width;
+    }
   }
 }
 
@@ -43,7 +65,7 @@ $left-col-heading-color: #6f6f6f;
     // end hack for safari
 
     line-height: 1.2;
-    padding-left: $spacing-unit / 2;
+    padding-left: $spacing-unit / 3;
   }
 
   h1, h2 {
@@ -91,5 +113,59 @@ $left-col-heading-color: #6f6f6f;
 
   @include media-query($on-laptop) {
     li, li:nth-child(even) { float: none; width: 100%; }
+  }
+}
+
+/**
+ * Post list
+ */
+
+.post-list {
+  > section {
+    h3 {
+      color: $grey-color-light;
+      font-size: 1.5em;
+      letter-spacing: 0.1em;
+      text-align: right;
+    }
+
+    ul {
+      list-style: none;
+
+      li {
+        @extend %vertical-rhythm;
+      }
+
+      h1 {
+        a {
+          color: $text-color;
+          text-decoration: none;
+        }
+
+        a:active {
+          color: $red-color;
+        }
+      }
+
+      .date {
+        color: $grey-color;
+        font-size: 0.9em;
+        display: inline-block;
+        padding-right: 0.3em;
+        padding-top: 0.1em;
+        vertical-align: top;
+        text-transform: uppercase;
+      }
+    }
+
+    @include media-query($on-tablet) {
+      ul h1 { font-size: 1.25em; }
+    }
+  }
+
+  > section:first-of-type h3 { display: none; }
+
+  @include media-query($on-laptop) {
+    margin-top: 0.6em;
   }
 }

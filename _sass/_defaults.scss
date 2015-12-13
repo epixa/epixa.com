@@ -12,12 +12,42 @@ body {
   font: $base-font-weight #{$base-font-size}/#{$base-line-height} $base-font-family;
   -moz-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+
+  @include media-query($on-laptop) {
+    padding-bottom: $spacing-unit;
+  }
 }
 
-.page {
-  background-color: $content-bg-color;
+/**
+ * Content positioning
+ */
+.content {
   margin: 0 auto;
   max-width: $max-content-width;
+}
+
+/**
+ * Page layout
+ */
+.page {
+  background-color: $content-bg-color;
+  padding-top: $spacing-unit;
+
+  @include media-query($on-laptop) {
+    margin-top: 2.5em;
+  }
+}
+
+.footnote {
+  color: $grey-color-dark;
+  font-size: 0.8em;
+  padding-top: 0.1em;
+  text-align: right;
+
+  a {
+    color: $grey-color-dark;
+    text-decoration: none;
+  }
 }
 
 aside {
@@ -65,6 +95,8 @@ aside {
 
       a {
         float: right;
+        line-height: 1.4;
+        margin-bottom: 0.5em;
         width: calc(100% - 1em);
       }
 
@@ -103,8 +135,3 @@ img {
     width: 0.7em;
   }
 }
-
-// page setup
-// fonts
-// colors
-// vertical flow
