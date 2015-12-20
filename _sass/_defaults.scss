@@ -6,6 +6,14 @@
   margin-bottom: $spacing-unit / 2;
 }
 
+%clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
 body {
   background: $bg-color url("../img/use_your_illusion.png"); /* http://subtlepatterns.com/use-your-illusion/ */
   color: $text-color;
@@ -16,6 +24,11 @@ body {
   @include media-query($on-laptop) {
     padding-bottom: $spacing-unit;
   }
+}
+
+em {
+  font-weight: 500;
+  font-style: normal;
 }
 
 /**
@@ -31,7 +44,7 @@ body {
  */
 .page {
   background-color: $content-bg-color;
-  padding-top: $spacing-unit;
+  //padding-top: $spacing-unit;
 
   @include media-query($on-laptop) {
     margin-top: 2.5em;
@@ -50,6 +63,7 @@ body {
   }
 }
 
+// todo: change this from global
 aside {
   color: $grey-color;
 

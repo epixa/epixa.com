@@ -1,3 +1,164 @@
 /**
  * # document
  */
+
+.document {
+  h1, h2, h3 {
+    font-size: 1.25em;
+  }
+
+  section, aside {
+    @extend %clearfix;
+    margin-bottom: $spacing-unit;
+  }
+
+  header {
+    @extend %vertical-rhythm;
+
+    h1 {
+      font-size: 1.5em;
+    }
+
+    h2 {
+      color: $grey-color;
+      font-size: 0.9em;
+      letter-spacing: 0.1em;
+    }
+  }
+
+  section {
+    h1, h2, h3, li, p {
+      @extend %vertical-rhythm;
+    }
+  }
+
+  .posts {
+    h1, ul { @extend %vertical-rhythm; }
+    .dependent { display: none; }
+  }
+
+  .author {
+    color: $text-color;
+
+    img {
+      display: inline-block;
+      height: $headshot-dimension;
+      padding-top: 0.2em;
+      vertical-align: top;
+      width: $headshot-dimension;
+    }
+
+    span {
+      display: inline-block;
+      width: calc(100% - #{$headshot-dimension + 1em});
+    }
+  }
+
+  .social-icon-links {
+    ul {
+      @extend %clearfix;
+      background-color: red;
+      width: 100%
+    }
+    li {
+      margin: 0;
+      padding: 0;
+      background-color: pink;
+      display: block;
+      float: left;
+      width: calc(50% - 2em);
+      a {
+        background-color: gray;
+      }
+    }
+
+  }
+
+  @include media-query($on-tablet) {
+    h1, h2, h3 {
+      font-size: 1.35em;
+    }
+
+    li, p, blockquote {
+      font-size: 1.1em;
+    }
+
+    header {
+      h1 {
+        font-size: 2em;
+      }
+
+      h2 {
+        font-size: 1em;
+        text-transform: uppercase;
+      }
+    }
+
+    .posts {
+      .dependent { display: inline; }
+    }
+
+    .author {
+      font-size: 1.2em
+    }
+  }
+
+  @include media-query($on-laptop) {
+    $laptop-spacing: $spacing-unit * 2;
+
+    padding: 8.9em;
+    padding-bottom: calc(8.9em - #{$laptop-spacing});
+    padding-top: calc(8.9em - #{$laptop-spacing});
+
+    section, aside {
+      margin-bottom: $laptop-spacing;
+    }
+
+    h1, h2, h3 {
+      font-size: 1.5em;
+    }
+
+    li, p, blockquote {
+      font-size: 1.25em;
+      line-height: 1.6;
+    }
+
+    header {
+      padding-bottom: calc(5em - #{$spacing-unit});
+
+      h1 {
+        font-size: 3.1em;
+        text-align: center;
+      }
+
+      h2 {
+        font-size: 1.25em;
+        font-weight: normal;
+        padding-top: 0.2em;
+        text-align: center;
+      }
+    }
+
+    section {
+      h2, h3 {
+        padding-top: 0.5em;
+      }
+
+      li, p, blockquote {
+        text-align: justify;
+      }
+    }
+
+    .author {
+      font-size: 1.9em;
+
+      img {
+        padding: 0;
+      }
+
+      span {
+        line-height: calc(#{$headshot-dimension} / 3);
+      }
+    }
+  }
+}

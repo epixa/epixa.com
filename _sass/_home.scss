@@ -11,11 +11,14 @@ $min-social-col-width: 15em;
 $left-col-heading-color: #6f6f6f;
 
 /**
- * Page
+ * Home
  */
-.page {
+.home {
+  @extend %clearfix;
+
   > header.col, > aside.col, > section.col {
     margin-bottom: $spacing-unit;
+    background-color: pink;
   }
 
   aside.block {
