@@ -33,8 +33,44 @@
   }
 
   .posts {
+    color: $grey-color;
+
     h1, ul { @extend %vertical-rhythm; }
+
     .dependent { display: none; }
+
+    h1 {
+      color: $grey-color;
+      font-size: 1.5em;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    a {
+      color: $grey-color;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: $red-color;
+    }
+
+    ul {
+      list-style: none;
+
+      li {
+        @extend %clearfix;
+
+        a {
+          float: right;
+          line-height: 1.4;
+          margin-bottom: 0.5em;
+          width: calc(100% - 1em);
+        }
+
+        .icon.icon-small > svg { vertical-align: baseline; }
+      }
+    }
   }
 
   .author {
@@ -56,22 +92,29 @@
 
   .social-icon-links {
     ul {
-      @extend %clearfix;
-      background-color: red;
+      text-align: center;
       width: 100%
     }
     li {
+      display: inline-block;
       margin: 0;
-      padding: 0;
-      background-color: pink;
+      padding: 0 0.5em;
+      width: 5em;
+    }
+    a {
+      color: $grey-color;
       display: block;
-      float: left;
-      width: calc(50% - 2em);
-      a {
-        background-color: gray;
+      text-align: center;
+      text-decoration: none;
+    }
+    .icon > svg {
+      height: 2.5em;
+      width: 2.5em;
+
+      path {
+        fill: $grey-color;
       }
     }
-
   }
 
   @include media-query($on-tablet) {
@@ -81,6 +124,10 @@
 
     li, p, blockquote {
       font-size: 1.1em;
+    }
+
+    .author {
+      margin-bottom: calc(#{$spacing-unit * 1.5});
     }
 
     header {
@@ -110,8 +157,12 @@
     padding-bottom: calc(8.9em - #{$laptop-spacing});
     padding-top: calc(8.9em - #{$laptop-spacing});
 
-    section, aside {
+    section, .posts {
       margin-bottom: $laptop-spacing;
+    }
+
+    .social-icon-links {
+      margin: 0;
     }
 
     h1, h2, h3 {

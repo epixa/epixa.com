@@ -8,13 +8,13 @@
 .col      { padding: 0  $spacing-unit; }
 
 .row:before, .row:after {
-    content: "";
-    display: table;
+  content: "";
+  display: table;
 }
 .row:after { clear: both; }
 
 @media only screen { .col {
-    float: left;
-    width: 100%;
-    box-sizing: border-box;
+  float: left;
+  width: 100%;
+  box-sizing: border-box;
 }}

@@ -44,7 +44,6 @@ em {
  */
 .page {
   background-color: $content-bg-color;
-  //padding-top: $spacing-unit;
 
   @include media-query($on-laptop) {
     margin-top: 2.5em;
@@ -60,62 +59,6 @@ em {
   a {
     color: $grey-color-dark;
     text-decoration: none;
-  }
-}
-
-// todo: change this from global
-aside {
-  color: $grey-color;
-
-  h1 {
-    color: $grey-color;
-    font-size: 1.5em;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  a {
-    color: $grey-color;
-    text-decoration: none;
-  }
-
-  a:hover {
-    color: $red-color;
-
-    .icon > svg path { fill: $red-color; }
-  }
-
-  a.more {
-    float: right;
-    font-size: 0.9em;
-    padding-left: 0.5em;
-
-    .icon > svg {
-      height: 0.5em;
-      vertical-align: 0.05em;
-      width: 0.5em;
-    }
-  }
-
-  a.more:not(:hover) {
-    color: $grey-color-light;
-  }
-
-  ul {
-    list-style: none;
-
-    li {
-      clear: both;
-
-      a {
-        float: right;
-        line-height: 1.4;
-        margin-bottom: 0.5em;
-        width: calc(100% - 1em);
-      }
-
-      .icon.icon-small > svg { vertical-align: baseline; }
-    }
   }
 }
 
