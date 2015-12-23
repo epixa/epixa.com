@@ -44,9 +44,11 @@ em {
  */
 .page {
   background-color: $content-bg-color;
+  padding-top: $spacing-unit;
 
   @include media-query($on-laptop) {
     margin-top: 2.5em;
+    padding-top: 0;
   }
 }
 
