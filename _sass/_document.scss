@@ -93,12 +93,14 @@
   .social-icon-links {
     ul {
       text-align: center;
-      width: 100%
+      margin: 0 auto;
+      width: 15em;
     }
     li {
-      display: inline-block;
+      display: block;
+      float: left;
       margin: 0;
-      padding: 0 0.5em;
+      padding: 1em;
       width: 5em;
     }
     a {
@@ -128,6 +130,17 @@
 
     .author {
       margin-bottom: $spacing-unit * 1.5;
+    }
+
+    .social-icon-links {
+      ul {
+        width: 100%
+      }
+      li {
+        display: inline-block;
+        float: none;
+        padding: 0 0.5em;
+      }
     }
 
     header {
