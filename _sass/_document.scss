@@ -32,6 +32,35 @@
     }
   }
 
+  .goback {
+    position: absolute;
+    right: 0.5em;
+    top: 0.1em;
+
+    .icon {
+      display: inline-block;
+      vertical-align: top;
+
+      > svg {
+        font-size: 0.8em;
+        path { fill: $grey-color; }
+      }
+    }
+
+    a {
+      display: inline-block;
+      color: $grey-color;
+      text-transform: lowercase;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: $grey-color-dark;
+
+      .icon > svg path { fill: $grey-color-dark; }
+    }
+  }
+
   .posts {
     color: $grey-color;
 
@@ -232,6 +261,34 @@
 
       li, p, blockquote {
         text-align: justify;
+      }
+    }
+
+    .goback {
+      left: 0;
+      line-height: 2.5em;
+      right: auto;
+      top: -2.5em;
+
+      .icon {
+        font-size: 0.6em;
+
+        > svg {
+          font-size: 1em;
+          path { fill: $grey-color-dark; }
+        }
+      }
+
+      a {
+        color: $grey-color-dark;
+        letter-spacing: 0.1em;
+        font-size: 1.5em;
+      }
+
+      a:hover {
+        color: $grey-color;
+
+        .icon > svg path { fill: $grey-color; }
       }
     }
 
