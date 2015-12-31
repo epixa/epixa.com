@@ -1,15 +1,76 @@
 ---
 layout: default
 ---
-<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+<article class="document col" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>
-    <p class="post-meta"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%b %-d, %Y" }}</time>{% if page.author %} • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>{% endif %}</p>
+  <header>
+    <h1 itemprop="name headline">{{ page.title }}</h1>
+    <h2><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%B %Y" }}</time></h2>
   </header>
 
-  <div class="post-content" itemprop="articleBody">
+  <section itemprop="articleBody">
     {{ content }}
-  </div>
+  </section>
+
+  <nav class="goback">
+    <a href="{{ "/" | prepend: site.baseurl }}">
+      <i class="icon icon-small">{% include icon-left-caret.svg %}</i>
+      Home
+    </a>
+  </nav>
+
+  {% if site.related_posts.length > 0 %}
+  <aside class="posts">
+    <h1 class="modest">
+      <span class="dependent">If you liked this article, </span>
+      you may also like:
+    </h1>
+    <ul>
+      {% for post in site.related_posts limit:5 %}
+      <li>
+        <i class="icon icon-small">{% include icon-right-caret.svg %}</i>
+        <a href="design-post.html">
+          <span class="date">{{ post.date | date: "%Y-%m-%d" }}</span>
+          {{ post.title }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </aside>
+  {% endif %}
+
+  <aside class="author">
+    <img src="/img/headshot.png">
+    <span>
+      <em>Court Ewing</em> is a <em>software engineer</em> who is passionate
+      about the <em>open source community</em>, user experience design, and
+      other nerdy things.
+    </span>
+  </aside>
+
+  <aside class="social-icon-links">
+    <ul>
+      <li>
+        <a href="https://github.com/epixa">
+          <i class="icon">{% include icon-github.svg %}</i> Github
+        </a>
+      </li>
+      <li>
+        <a href="https://twitter.com/courtewing">
+          <i class="icon">{% include icon-twitter.svg %}</i> Twitter
+        </a>
+      </li>
+      <li>
+        <a href="https://www.linkedin.com/in/courtewing">
+          <i class="icon">{% include icon-linkedin.svg %}</i> Linkedin
+        </a>
+      </li>
+      <li>
+        <a href="mailto:court@epixa.com">
+          <i class="icon">{% include icon-email.svg %}</i> Email
+        </a>
+      </li>
+    </ul>
+  </aside>
 
 </article>

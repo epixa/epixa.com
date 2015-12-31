@@ -1,0 +1,66 @@
+---
+layout: default
+---
+
+<div class="home">
+
+  <header class="col">
+    <div class="row">
+      <section class="col me">
+        <img src="/img/headshot.png">
+        <hgroup>
+          <h1><a href="{{ "/" | prepend: site.baseurl }}">Court Ewing</a></h1>
+          <h2>Software Engineer, Elastic</h2>
+        </hgroup>
+      </section>
+
+      <ul class="col social-list">
+        <li>
+          <a href="https://github.com/epixa">
+            <i class="icon">{% include icon-github.svg %}</i> github.com/epixa
+          </a>
+        </li>
+        <li>
+          <a href="https://twitter.com/courtewing">
+            <i class="icon">{% include icon-twitter.svg %}</i> twitter.com/courtewing
+          </a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/courtewing">
+            <i class="icon">{% include icon-linkedin.svg %}</i> linkedin.com/in/courtewing
+          </a>
+        </li>
+        <li>
+          <a href="mailto:court@epixa.com">
+            <i class="icon">{% include icon-email.svg %}</i> court@epixa.com
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  {{ content }}
+
+  <aside class="col block">
+    <h1>About</h1>
+    <p>
+      I lead the UX Engineering team at Engine Yard, write a lot of JavaScript,
+      and make my own coffee and beer. My entire career has been built upon
+      open source technology, so this blog is one way for me to give back.
+      <a class="more" href="{{ "/about" | prepend: site.baseurl }}">more <i class="icon">{% include icon-right-caret.svg %}</i></a>
+    </p>
+  </aside>
+
+  <aside class="col">
+    <h1>Projects</h1>
+    <ul>
+      <li><i class="icon icon-small">{% include icon-right-caret.svg %}</i><a href="https://github.com/epixa/epixa-resource">epixa-resource - Memoized REST model mapping for angular.js</a></li>
+      <li><i class="icon icon-small">{% include icon-right-caret.svg %}</i><a href="https://npmjs.org/package/chuckt">ChuckT - Event system for SockJS websockets</a></li>
+      <li><i class="icon icon-small">{% include icon-right-caret.svg %}</i><a href="https://github.com/epixa/strapi-dev">Strapi - Micro API Framework for PHP 5.4</a></li>
+      <li><i class="icon icon-small">{% include icon-right-caret.svg %}</i><a href="https://github.com/epixa/talkfest">Talkfest - HN inspired discussion board built with Symfony 2</a></li>
+      <li><i class="icon icon-small">{% include icon-right-caret.svg %}</i><a href="https://github.com/epixa/exodus">Exodus - Finds common followers between Twitter and Identi.ca</a></li>
+      <li><i class="icon icon-small">{% include icon-right-caret.svg %}</i><a href="https://github.com/epixa/Epixa">Epixa - Utility library for Zend Framework 1 and Doctrine 2</a></li>
+    </ul>
+  </aside>
+
+</div>
