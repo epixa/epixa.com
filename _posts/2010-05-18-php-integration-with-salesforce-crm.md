@@ -18,13 +18,13 @@ The first thing you'll need to do to access your salesforce via the api is gener
 
 You have a few options when it comes to generating WSDLs in salesforce; I prefer to use the strongly typed Enterprise WSDL whenever possible.  Enter your salesforce 'setup' section, traverse to Develop > API, and click the "Generate Enterprise WSDL" link (see screenshot below).  On the following step, just leave all the versions at the defaults and click the "Generate" button.  Save the XML that is generated into a new file in your application.
 
-![Screenshot of salesforce setup for generating a wsdl](https://s3.amazonaws.com/epixa.com/images/2010-05-18-php-integration-with-salesforce-crm/salesforce-generate-wsdl.png "Salesforce: Generate WSDL")
+![Screenshot of salesforce setup for generating a wsdl]({{site.baseurl}}/img/posts/salesforce-generate-wsdl.png "Salesforce: Generate WSDL")
 
 Get your Security Token
 -----------------------
 To access the soap service, you will need to provide your username, password, and the security token that is generated for your account.  The security token is a random 25 character string of uppercase and lowercase letters and numbers.  If you are not sure what your security token is, you can generate a new one through the salesforce 'setup' page (see screenshot below).  While you can reset your security token at any time, take heed of the notices that pepper the security-token section of the salesforce setup: if you change your security token, all existing api applications that rely on the token will break unless they are updated with the new token.
 
-![Screenshot of salesforce setup for resetting login security token](https://s3.amazonaws.com/epixa.com/images/2010-05-18-php-integration-with-salesforce-crm/salesforce-reset-security-token.png "Salesforce: Reset Security Token")
+![Screenshot of salesforce setup for resetting login security token]({{site.baseurl}}/img/posts/salesforce-reset-security-token.png "Salesforce: Reset Security Token")
 
 Get your Code On
 ----------------
