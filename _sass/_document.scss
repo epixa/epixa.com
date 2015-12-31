@@ -109,6 +109,10 @@
       text-align: center;
       text-decoration: none;
     }
+    a:hover {
+      color: $red-color;
+      .icon > svg path { fill: $red-color; }
+    }
     .icon > svg {
       height: 2.5em;
       width: 2.5em;
