@@ -121,13 +121,13 @@
     img {
       display: inline-block;
       height: $headshot-dimension;
-      padding-top: 0.2em;
       vertical-align: top;
       width: $headshot-dimension;
     }
 
     span {
       display: inline-block;
+      line-height: $headshot-dimension / 3;
       width: calc(100% - #{$headshot-dimension + 1em});
     }
   }
