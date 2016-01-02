@@ -31,6 +31,9 @@ git push -f origin gh-pages
 # Move back to previous branch.
 git checkout -
 
+# Get it set up for development again
+npm install
+
 echo "Deployed Successfully!"
 
 exit 0
