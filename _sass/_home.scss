@@ -105,11 +105,16 @@ $left-col-heading-color: #6f6f6f;
  */
 .me {
   align-items: center;
+  display: -ms-flex;
+  display: -webkit-flex;
   display: flex;
+  -ms-flex-direction: row;
+  -webkit-flex-direction: row;
   flex-direction: row;
   padding-bottom: $spacing-unit / 4;
 
   > img {
+    -webkit-flex-shrink: 0;
     flex-shrink: 0;
     height: $headshot-dimension;
     width: $headshot-dimension;
@@ -118,6 +123,7 @@ $left-col-heading-color: #6f6f6f;
   > hgroup {
     // begin hack for safari
     // prevents headshot from scaling on mid-sized resolutions
+    -webkit-flex-shrink: 0;
     flex-shrink: 0;
     // end hack for safari
 
