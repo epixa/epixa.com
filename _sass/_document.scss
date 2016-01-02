@@ -221,6 +221,10 @@
     padding-bottom: $doc-margins - $laptop-spacing;
     padding-top: $doc-margins - $laptop-spacing;
 
+    > :last-child {
+      margin-bottom: 0;
+    }
+
     section, .posts {
       margin-bottom: $laptop-spacing;
     }
