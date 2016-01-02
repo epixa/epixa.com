@@ -9,15 +9,19 @@
 title: Court Ewing - Epixa
 email: court@epixa.com
 description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  Court Ewing is a software engineer at Elastic who writes a bunch of
+  JavaScript and Elixir.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://epixa.com" # the base hostname & protocol for your site
-twitter_username: courtewing
-github_username:  epixa
 permalink: /:year/:month/:title.html
+timezone: America/New_York
+lsi: true
 
 # Build settings
 markdown: kramdown
-exclude: [ "node_modules", "npm-debug.log", "package.json" ]
+exclude: [
+  "node_modules",
+  "npm-debug.log",
+  "package.json",
+  "design.html",
+  "design-post.html"
+]

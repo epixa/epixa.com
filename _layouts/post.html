@@ -19,21 +19,23 @@ layout: default
     </a>
   </nav>
 
-  {% if site.related_posts.length > 0 %}
+  {% if site.related_posts.size > 0 %}
   <aside class="posts">
     <h1 class="modest">
       <span class="dependent">If you liked this article, </span>
       you may also like:
     </h1>
     <ul>
-      {% for post in site.related_posts limit:5 %}
+      {% for post in site.related_posts limit:6 %}
+      {% if post.url != page.url %}
       <li>
         <i class="icon icon-small">{% include icon-right-caret.svg %}</i>
-        <a href="design-post.html">
+        <a href="{{ post.url }}">
           <span class="date">{{ post.date | date: "%Y-%m-%d" }}</span>
           {{ post.title }}
         </a>
       </li>
+      {% endif %}
       {% endfor %}
     </ul>
   </aside>
