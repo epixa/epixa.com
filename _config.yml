@@ -23,5 +23,7 @@ exclude: [
   "npm-debug.log",
   "package.json",
   "design.html",
-  "design-post.html"
+  "design-post.html",
+  "Gemfile",
+  "Gemfile.lock"
 ]
