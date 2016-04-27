@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Follow-up: How PHP is Broken and How It Can Be Fixed</title>
+  <meta name="description" content="A few weeks ago I wrote an article in which I complained about a few aspects of the PHP development process that I thought were inexcusable and harmful.  The...">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="canonical" href="/2011/11/follow-up-how-php-is-broken-and-how-it-can-be-fixed.html">
+  <link rel="alternate" type="application/rss+xml" title="Court Ewing - Epixa" href="/feed.xml">
+</head>
+
+
+  <body>
+
+    <div class="content page row">
+
+      <article class="document col" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header>
+    <h1 itemprop="name headline">Follow-up: How PHP is Broken and How It Can Be Fixed</h1>
+    <h2><time datetime="2011-11-14T17:53:46-05:00" itemprop="datePublished">November 2011</time></h2>
+  </header>
+
+  <section itemprop="articleBody">
+    <p>A few weeks ago I wrote an <a href="http://epixa.com/2011/08/how-php-is-broken-and-how-it-can-be-fixed.html">article</a> in which I complained about a few aspects of the PHP development process that I thought were inexcusable and harmful.  The article was surprisingly well-received with only a handful of people responding by demeaning me; given the nature of the article, I’d say that is a big win!  The generally positive response does not make up for the flaws in the article itself, however.  You see, I started out writing the article with the serious intention of making not only an honest critique but also providing some practical feedback for how the process could be improved.  I feel my critique was completely honest, but I failed spectacularly in my second goal, and any merit that the article had was overshadowed by its negative tone.</p>
+
+<p>It is no secret that the PHP development process has never been a shining example of project organization or quality assurance.  Until recently, some of the most important aspects of any project’s development cycle were either entirely lacking or were ill-defined.  Worse, there was little in the form of systemic quality assurance.  Fortunately, the core devs did not ignore these issues, and they’ve been pushing really hard to improve on these areas over the past few years:  They’ve created a new <a href="https://wiki.php.net/rfc/releaseprocess">release process</a>, a new <a href="https://wiki.php.net/rfc/voting">voting procedure</a>, and have been building up the automated <a href="http://gcov.php.net/PHP_5_4/lcov_html">test coverage</a>.  They’re shaping the development process into a more open, clear, and modern process that the whole community can be proud of.</p>
+
+<p>This type of transformation takes time, however, and they are not at the finish line yet.  There are specific characteristics of the development team and process that are still very much a huge problem today.  An acceptance of failing unit tests along with a lack of an automated release process that incorporates testing requirements resulted in the recent disaster that was the PHP 5.3.7 release.  A lack of clear responsibilities continues to disrupt developer trust in the PHP project.  Insufficient means of communication and insufficient use of those means frequently keeps the large number of non-contributing PHP developers in the dark.  I’ll address each of these individually for clarity sake:</p>
+
+<h2 id="automated-tests-are-ineffective-if-failures-are-acceptable">Automated tests are ineffective if failures are acceptable</h2>
+<p>So much progress has been made in recent years with the PHP test suite – the coverage for PHP 5.3 is at 70%.  Obviously this isn’t ideal, but PHP is a massive project, so it is understandable that it takes some serious time to build the testing suite toward 100% coverage.  The big problem with the automated PHP tests is not that there are not enough but rather that it is not a requirement that tests pass.  To make matters worse, it does not appear that new code is required to have significant test coverage either.  At the time of this writing, there are 128 failing unit tests in PHP 5.3 (the current stable branch), and there are 129 failing unit tests in PHP 5.4.  There is actually a small decrease in test coverage between the two versions as well (70.2% in 5.3 vs 70.0% in 5.4); I’m not sure whether this is the result of existing tests being removed or new code being committed without corresponding tests, but it is definitely not a trend that should continue.</p>
+
+<p>The consequences of accepting failing tests were never more apparent than with the stable release of PHP 5.3.7.  The details of which have been outlined numerous times all over the place (including in my last post), but the gist is that a serious bug that broke a common security component was introduced into the PHP repository, the automated tests actually identified that the bug existed, but the release happened anyway.  There has been no official explanation for how this happened, but it appears to be the result of an unfortunate human error.  At the time there were close to 200 tests failing, so it seems reasonable to assume that a human may have missed that one of those failed tests was actually due to a severe issue.</p>
+
+<p>There are a couple things that could be done in order to solve this problem.  Defining a coverage goal would be an excellent starting point.  Ideally this goal would be 100%, but any goal above 80% would likely be a huge step in the right direction.  Once a sufficient coverage goal has been defined, all new features committed to the HEAD should be required to have corresponding tests that match or exceed the coverage goal.  Unless existing tests are removed, this will ensure that the test coverage can only increase over time.  In addition, all current automated tests should run successfully.  There appears to be an effort to identify which tests should be expected to fail, but that only partly addresses the problem.  If a test is no longer applicable for some reason, then it should be removed.  If it is applicable, then a bug exists that needs to be addressed.</p>
+
+<p>The coverage goal and a requirement that all new commits need to exceed that goal can be done within the existing development process.  Those are the easy parts of the issue to address.  The more difficult issue is resolving the errors from the existing tests.  Theoretically, more contributors could help a lot here; some of the failing tests probably belong to components that no longer have active maintainers, so the currently active core developers may not be the best to address the issue.  Realistically, the hardest contributors to find are those that are comfortable writing C, and this is also the most difficult type of contribution to make when you’re not already involved in the project.  Resolving all of the failing tests will no doubt require both an increased effort by the existing core developers as well as an increase in the number of contributors.</p>
+
+<h2 id="developer-trust-is-shaken-due-to-lack-of-communication">Developer trust is shaken due to lack of communication</h2>
+<p>The developers managing the PHP project are only human, so mistakes are not only reasonable but also inevitable.  The community (none more so than myself) needs to accept that fact and remember this when reacting to future mistakes.  Nonetheless, incidents such as the failed release of 5.3.7 have shaken the trust that many community members place in the core developers to manage the project in a professional and stable way, and as a result there is a whole lot of mudslinging that happens when a mistake occurs.</p>
+
+<p>Communication is the key, here.  In my opinion, the worst single part of the release of PHP 5.3.7 was not the human error in deployment but rather a breakdown in sufficient communication.  The two official means for people to follow important PHP announcements are the php.announce mailing list and the main news feed on the homepage of PHP.net.  We are rapidly approaching 2012, but PHP has no developer blog much less an official social networking account (e.g. Twitter, Google+) to follow for technical updates.</p>
+
+<p>The php.announce mailing list used to include security advisories in addition to releases, but this appeared to stop long ago.  The announcement mailing list really should include all new releases, security advisories, and notices of unstable releases (e.g. 5.3.7).  This should allow any one of the core developers to immediately draw attention to any stability-related/critical issues to anyone subscribed to the list.  After 5.3.7 was released, it took four days for any official word to come down the chute that a problem existed.  In that time, any number of people could have upgraded their production environments to the broken release, and it didn’t have to play out that way!  At least two core developers jumped on and fixed the issue the next day after release.  That’s pretty damn good turn-around.  Unfortunately, it was still three days before an official notice was posted and a total of five days before a new release fixed the issue.  In this case, a swift reaction from core developers was overshadowed by less-than-ideal communication, and that is truly a shame.</p>
+
+<p>It would be nice to see an official development blog for PHP where any of the core developers could post articles about features that are being worked on and, more importantly, post-mortems for when things go to crap (again, 5.3.7).  I know the core PHP developers didn’t just brush 5.3.7 away from their minds the moment it happened.  I know this because since then the number of failing unit tests has plummeted.  I know this because I’ve been personally assured by a few core developers that measures are being taken to make sure similar problems do not happen for future releases.  I do <em>not</em> know this based on any form of official communication from those managing the PHP project, and that is unfortunate.</p>
+
+<p>We, the community, know that the core developers are working.  We know that they’re trying hard to make sure the core is stable.  We know that they are introducing cool new features to help keep PHP competitive and modern.  But we know all of this only because we’ve heard it through the grapevine.  A developer blog would allow the core developers to speak, on their own terms, about failures that happen and what steps they’re taking to avoid them.  This is frequently all that is required to turn a horribly unfortunate situation into a positive experience for the community as a whole.  If ever you needed a better example of that, compare the reactions from people losing their accounts and credit card information to Sony versus people losing their accounts and credit card information to Valve.  For the former, the near-universal response was outrage.  For the latter, most people responded positively.  The gaming community did not rip Valve a new one because Valve did an excellent job communicating with them.  Despite overwhelming failure, the community <em>trusts</em> Valve due to little more than communication alone.</p>
+
+<p>Also, the features the core developers are working on are pretty damn sweet, so it definitely would be awesome to hear more from them about those ongoing pieces of development.  I don’t know if it would help on the “trust” front, but it would be awesome.</p>
+
+<h2 id="php-itself-is-not-broken-my-title-is-sensational-rubbish">PHP itself is not broken; my title is sensational rubbish</h2>
+<p>I preserved the title from the previous article so that people can quickly make the connection between the two, but the original title really does not reflect my thoughts on the matter.</p>
+
+<p>The PHP community is doing really awesome things.  From extraordinary second generation frameworks down to one-click install applications that have unparalleled portability, the extent to which we lead the web is still amazing and humbling to me.  The core PHP developers have long been a key component of that, and none of progress that modern PHP applications have made would be possible without their ongoing efforts.  As a result of those efforts, PHP is a stable, secure, and beautifully-practical language that is both easy for novices to wrap their heads around and experts to build the most-used web applications the world has ever seen.  PHP is not broken, but there are areas that can definitely be improved.  Fixing unit tests and polishing methods of communication should seem minor in comparison to the monumental accomplishments of the past 15 years.</p>
+
+  </section>
+
+  <nav class="goback">
+    <a href="/">
+      <i class="icon icon-small"><svg viewBox="0 0 292.4 292.4"><path d="M223 5.4C219.4 1.8 215.1 0 210.1 0c-4.9 0-9.2 1.8-12.8 5.4L69.4 133.3c-3.6 3.6-5.4 7.9-5.4 12.8 0 4.9 1.8 9.2 5.4 12.8l127.9 127.9c3.6 3.6 7.9 5.4 12.8 5.4 4.9 0 9.2-1.8 12.8-5.4 3.6-3.6 5.4-7.9 5.4-12.8V18.3C228.4 13.3 226.6 9 223 5.4z"/></svg>
+</i>
+      Home
+    </a>
+  </nav>
+
+  
+  <aside class="posts">
+    <h1 class="modest">
+      <span class="dependent">If you liked this article, </span>
+      you may also like:
+    </h1>
+    <ul>
+      
+      
+      <li>
+        <i class="icon icon-small"><svg viewBox="0 0 292.4 292.4"><path d="M223 133.3L95.1 5.4C91.5 1.8 87.2 0 82.2 0c-5 0-9.2 1.8-12.8 5.4 -3.6 3.6-5.4 7.9-5.4 12.8v255.8c0 4.9 1.8 9.2 5.4 12.8 3.6 3.6 7.9 5.4 12.9 5.4 4.9 0 9.2-1.8 12.8-5.4l127.9-127.9c3.6-3.6 5.4-7.9 5.4-12.8C228.4 141.2 226.6 136.9 223 133.3z"/></svg>
+</i>
+        <a href="/2011/08/how-php-is-broken-and-how-it-can-be-fixed.html">
+          <span class="date">2011-08-31</span>
+          How PHP is Broken and How It Can Be Fixed
+        </a>
+      </li>
+      
+      
+      
+      <li>
+        <i class="icon icon-small"><svg viewBox="0 0 292.4 292.4"><path d="M223 133.3L95.1 5.4C91.5 1.8 87.2 0 82.2 0c-5 0-9.2 1.8-12.8 5.4 -3.6 3.6-5.4 7.9-5.4 12.8v255.8c0 4.9 1.8 9.2 5.4 12.8 3.6 3.6 7.9 5.4 12.9 5.4 4.9 0 9.2-1.8 12.8-5.4l127.9-127.9c3.6-3.6 5.4-7.9 5.4-12.8C228.4 141.2 226.6 136.9 223 133.3z"/></svg>
+</i>
+        <a href="/2012/04/array-oriented-programming.html">
+          <span class="date">2012-04-01</span>
+          A New Paradigm Rises to Save the Modern Web
+        </a>
+      </li>
+      
+      
+      
+      <li>
+        <i class="icon icon-small"><svg viewBox="0 0 292.4 292.4"><path d="M223 133.3L95.1 5.4C91.5 1.8 87.2 0 82.2 0c-5 0-9.2 1.8-12.8 5.4 -3.6 3.6-5.4 7.9-5.4 12.8v255.8c0 4.9 1.8 9.2 5.4 12.8 3.6 3.6 7.9 5.4 12.9 5.4 4.9 0 9.2-1.8 12.8-5.4l127.9-127.9c3.6-3.6 5.4-7.9 5.4-12.8C228.4 141.2 226.6 136.9 223 133.3z"/></svg>
+</i>
+        <a href="/2010/05/php-integration-with-salesforce-crm.html">
+          <span class="date">2010-05-18</span>
+          PHP Integration with Salesforce CRM
+        </a>
+      </li>
+      
+      
+      
+      <li>
+        <i class="icon icon-small"><svg viewBox="0 0 292.4 292.4"><path d="M223 133.3L95.1 5.4C91.5 1.8 87.2 0 82.2 0c-5 0-9.2 1.8-12.8 5.4 -3.6 3.6-5.4 7.9-5.4 12.8v255.8c0 4.9 1.8 9.2 5.4 12.8 3.6 3.6 7.9 5.4 12.9 5.4 4.9 0 9.2-1.8 12.8-5.4l127.9-127.9c3.6-3.6 5.4-7.9 5.4-12.8C228.4 141.2 226.6 136.9 223 133.3z"/></svg>
+</i>
+        <a href="/2010/05/the-best-models-are-easy-models.html">
+          <span class="date">2010-05-05</span>
+          The Best Models are Easy Models
+        </a>
+      </li>
+      
+      
+      
+      <li>
+        <i class="icon icon-small"><svg viewBox="0 0 292.4 292.4"><path d="M223 133.3L95.1 5.4C91.5 1.8 87.2 0 82.2 0c-5 0-9.2 1.8-12.8 5.4 -3.6 3.6-5.4 7.9-5.4 12.8v255.8c0 4.9 1.8 9.2 5.4 12.8 3.6 3.6 7.9 5.4 12.9 5.4 4.9 0 9.2-1.8 12.8-5.4l127.9-127.9c3.6-3.6 5.4-7.9 5.4-12.8C228.4 141.2 226.6 136.9 223 133.3z"/></svg>
+</i>
+        <a href="/2011/08/create-and-validate-a-choice-list-in-a-symfony-2-form.html">
+          <span class="date">2011-08-16</span>
+          Create and Validate a Choice List in a Symfony 2 Form
+        </a>
+      </li>
+      
+      
+    </ul>
+  </aside>
+  
+
+  <aside class="author">
+    <img src="/img/headshot.png">
+    <span>
+      <em>Court Ewing</em> is a <em>software engineer</em> who is passionate
+      about the <em>open source community</em>, user experience design, and
+      other nerdy things.
+    </span>
+  </aside>
+
+  <aside class="social-icon-links">
+    <ul>
+      <li>
+        <a href="https://github.com/epixa">
+          <i class="icon"><svg viewBox="0 0 450 450"><path d="M409.1 114.6c-19.6-33.6-46.2-60.2-79.8-79.8C295.7 15.2 259.1 5.4 219.3 5.4c-39.8 0-76.5 9.8-110.1 29.4 -33.6 19.6-60.2 46.2-79.8 79.8C9.8 148.2 0 184.9 0 224.6c0 47.8 13.9 90.7 41.8 128.9 27.9 38.2 63.9 64.6 108.1 79.2 5.1 1 8.9 0.3 11.4-2 2.5-2.3 3.7-5.1 3.7-8.6 0-0.6 0-5.7-0.1-15.4 -0.1-9.7-0.1-18.2-0.1-25.4l-6.6 1.1c-4.2 0.8-9.5 1.1-15.8 1 -6.4-0.1-13-0.8-19.8-2 -6.9-1.2-13.2-4.1-19.1-8.6 -5.9-4.5-10.1-10.3-12.6-17.6l-2.9-6.6c-1.9-4.4-4.9-9.2-9-14.6 -4.1-5.3-8.2-8.9-12.4-10.8l-2-1.4c-1.3-1-2.6-2.1-3.7-3.4 -1.1-1.3-2-2.7-2.6-4 -0.6-1.3-0.1-2.4 1.4-3.3 1.5-0.9 4.3-1.3 8.3-1.3l5.7 0.9c3.8 0.8 8.5 3 14.1 6.9 5.6 3.8 10.2 8.8 13.8 14.8 4.4 7.8 9.7 13.8 15.8 17.8 6.2 4.1 12.4 6.1 18.7 6.1 6.3 0 11.7-0.5 16.3-1.4 4.6-1 8.8-2.4 12.8-4.3 1.7-12.8 6.4-22.6 14-29.4 -10.8-1.1-20.6-2.9-29.3-5.1 -8.7-2.3-17.6-6-26.8-11.1 -9.2-5.1-16.9-11.5-23-19.1 -6.1-7.6-11.1-17.6-15-30 -3.9-12.4-5.9-26.6-5.9-42.8 0-23 7.5-42.6 22.6-58.8 -7-17.3-6.4-36.7 2-58.2 5.5-1.7 13.7-0.4 24.6 3.9 10.9 4.3 18.8 8 23.8 11 5 3 9.1 5.6 12.1 7.7 17.7-4.9 36-7.4 54.8-7.4s37.1 2.5 54.8 7.4l10.8-6.8c7.4-4.6 16.2-8.8 26.3-12.6 10.1-3.8 17.8-4.9 23.1-3.1 8.6 21.5 9.3 40.9 2.3 58.2 15 16.2 22.6 35.8 22.6 58.8 0 16.2-2 30.5-5.9 43 -3.9 12.5-8.9 22.5-15.1 30 -6.2 7.5-13.9 13.9-23.1 19 -9.2 5.1-18.2 8.9-26.8 11.1 -8.7 2.3-18.4 4-29.3 5.1 9.9 8.6 14.8 22.1 14.8 40.5v60.2c0 3.4 1.2 6.3 3.6 8.6 2.4 2.3 6.1 3 11.3 2 44.2-14.7 80.2-41.1 108.1-79.2 27.9-38.2 41.8-81.1 41.8-128.9C438.5 184.9 428.7 148.2 409.1 114.6z"/></svg>
+</i> Github
+        </a>
+      </li>
+      <li>
+        <a href="https://twitter.com/courtewing">
+          <i class="icon"><svg viewBox="0 0 450 450"><path d="M450 85.7c-17.7 7.6-35.4 12.4-53.1 14.3 20-12 33.5-28.9 40.5-50.8 -18.3 10.8-37.8 18.3-58.5 22.3 -18.3-19.4-40.7-29.1-67.4-29.1 -25.5 0-47.2 9-65.2 27 -18 18-27 39.7-27 65.2 0 6.9 0.8 13.9 2.3 21.1 -37.7-1.9-73-11.4-106.1-28.4C82.5 110.2 54.4 87.5 31.4 59.1c-8.4 14.3-12.6 29.8-12.6 46.5 0 15.8 3.7 30.5 11.1 44 7.4 13.5 17.4 24.5 30 32.8 -14.8-0.6-28.7-4.5-41.7-11.7v1.1c0 22.3 7 41.8 21 58.7 14 16.8 31.6 27.5 53 31.8 -8 2.1-16.1 3.1-24.3 3.1 -5.3 0-11.1-0.5-17.4-1.4 5.9 18.5 16.8 33.6 32.5 45.5 15.8 11.9 33.7 18 53.7 18.4 -33.5 26.3-71.7 39.4-114.5 39.4 -8.2 0-15.6-0.4-22.3-1.1 42.8 27.6 90 41.4 141.6 41.4 32.7 0 63.5-5.2 92.2-15.6 28.7-10.4 53.3-24.3 73.7-41.7 20.4-17.4 37.9-37.4 52.7-60.1 14.8-22.7 25.7-46.3 33-70.9 7.2-24.7 10.8-49.3 10.8-74.1 0-5.3-0.1-9.3-0.3-12C421.8 120.2 437.2 104.3 450 85.7z"/></svg>
+</i> Twitter
+        </a>
+      </li>
+      <li>
+        <a href="https://www.linkedin.com/in/courtewing">
+          <i class="icon"><svg viewBox="0 0 438.5 438.5"><path d="M414.4 24.1C398.3 8 379 0 356.3 0H82.2C59.6 0 40.2 8 24.1 24.1 8 40.2 0 59.6 0 82.2v274.1c0 22.6 8 42 24.1 58.1 16.1 16.1 35.5 24.1 58.1 24.1h274.1c22.6 0 42-8 58.1-24.1 16.1-16.1 24.1-35.5 24.1-58.1V82.2C438.5 59.6 430.5 40.2 414.4 24.1zM133.6 367.2H67.7V169h66V367.2zM127.6 132.3c-6.9 6.6-15.9 9.9-27.1 9.9h-0.3c-10.8 0-19.6-3.3-26.4-9.9 -6.8-6.6-10.1-14.7-10.1-24.4 0-9.9 3.5-18.1 10.4-24.6 7-6.5 15.9-9.7 27-9.7 11 0 19.9 3.2 26.6 9.7 6.7 6.5 10.1 14.7 10.3 24.6C137.9 117.6 134.5 125.8 127.6 132.3zM370.9 367.2h-66v-105.9c0-29.9-11-44.8-33.1-44.8 -8.4 0-15.4 2.3-21.1 7 -5.7 4.7-10 10.3-12.8 17 -1.3 3.4-2 8.8-2 16v110.8h-66c0.6-119.5 0.6-185.6 0-198.1h66v28c13.9-21.7 33.6-32.5 59.1-32.5 22.8 0 41.2 7.5 55.1 22.6 13.9 15 20.8 37.2 20.8 66.5v113.6H370.9z"/></svg>
+</i> Linkedin
+        </a>
+      </li>
+      <li>
+        <a href="mailto:court@epixa.com">
+          <i class="icon"><svg viewBox="0 0 511.6 511.6"><path d="M498.2 68.2c-8.9-8.9-19.7-13.4-32.3-13.4H45.7c-12.6 0-23.3 4.5-32.3 13.4C4.5 77.2 0 87.9 0 100.5v310.6c0 12.6 4.5 23.3 13.4 32.3 8.9 9 19.7 13.4 32.3 13.4h420.3c12.6 0 23.3-4.5 32.3-13.4 8.9-8.9 13.4-19.7 13.4-32.3V100.5C511.6 87.9 507.2 77.2 498.2 68.2zM475.1 411.1c0 2.5-0.9 4.6-2.7 6.4 -1.8 1.8-3.9 2.7-6.4 2.7H45.7c-2.5 0-4.6-0.9-6.4-2.7 -1.8-1.8-2.7-3.9-2.7-6.4V191.9c6.1 6.9 12.7 13.1 19.7 18.8 51 39.2 91.6 71.4 121.6 96.5 9.7 8.2 17.6 14.6 23.7 19.1 6.1 4.6 14.3 9.2 24.7 13.8 10.4 4.7 20.1 7 29.3 7h0.3 0.3c9.1 0 18.9-2.3 29.3-7 10.4-4.7 18.6-9.3 24.7-13.8 6.1-4.6 14-10.9 23.7-19.1 30.1-25.1 70.6-57.3 121.6-96.5 7-5.7 13.6-12 19.7-18.8V411.1L475.1 411.1zM475.1 107.9v3.1c0 11.2-4.4 23.7-13.3 37.5 -8.9 13.8-18.4 24.8-28.7 33 -36.7 28.9-74.9 59.1-114.5 90.5 -1.1 1-4.5 3.8-10 8.4 -5.5 4.7-9.9 8.2-13.1 10.7 -3.2 2.5-7.5 5.5-12.7 9 -5.2 3.5-10 6.1-14.4 7.9 -4.4 1.7-8.5 2.6-12.3 2.6h-0.3 -0.3c-3.8 0-7.9-0.9-12.3-2.6 -4.4-1.7-9.2-4.3-14.4-7.9 -5.2-3.5-9.5-6.5-12.7-9 -3.2-2.5-7.6-6-13.1-10.7 -5.5-4.7-8.9-7.5-10-8.4 -39.6-31.4-77.7-61.6-114.5-90.5 -28-22.1-42-49.1-42-81.1 0-2.5 0.9-4.6 2.7-6.4 1.8-1.8 3.9-2.7 6.4-2.7h420.3c1.5 0.9 2.9 1.1 4 0.7 1.1-0.4 2 0.3 2.6 2.1 0.6 1.8 1.1 2.7 1.6 2.6 0.5-0.1 0.8 1.1 0.9 3.6 0.1 2.5 0.1 3.7 0.1 3.7V107.9L475.1 107.9z"/></svg>
+</i> Email
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+</article>
+
+
+    </div>
+
+    <footer class="content">
+      <div class="footnote">
+        Icons by <a href="http://www.flaticon.com/authors/dave-gandy" target="_blank">Dave Gandy</a>
+        - <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">CC BY 3.0</a>
+      </div>
+    </footer>
+
+  </body>
+
+</html>

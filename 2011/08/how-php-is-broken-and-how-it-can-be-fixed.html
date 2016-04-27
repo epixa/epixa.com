@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>How PHP is Broken and How It Can Be Fixed</title>
+  <meta name="description" content="Edit (Nov 14 2011 6:03pm) The follow-up article is posted here.Edit (Aug 31 2011 8:05pm): When I started writing this article, my intentions were to criticiz...">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="canonical" href="/2011/08/how-php-is-broken-and-how-it-can-be-fixed.html">
+  <link rel="alternate" type="application/rss+xml" title="Court Ewing - Epixa" href="/feed.xml">
+</head>
+
+
+  <body>
+
+    <div class="content page row">
+
+      <article class="document col" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header>
+    <h1 itemprop="name headline">How PHP is Broken and How It Can Be Fixed</h1>
+    <h2><time datetime="2011-08-31T11:49:05-04:00" itemprop="datePublished">August 2011</time></h2>
+  </header>
+
+  <section itemprop="articleBody">
+    <p><strong>Edit (Nov 14 2011 6:03pm)</strong> The follow-up article is posted <a href="http://epixa.com/2011/11/follow-up-how-php-is-broken-and-how-it-can-be-fixed.html">here</a>.</p>
+
+<p><strong>Edit (Aug 31 2011 8:05pm):</strong> When I started writing this article, my intentions were to criticize the PHP core developers for what I consider to be a severely broken process.  I do want to make that clear.  As a member of the community and a long-time PHP programmer, I find it indescribably irritating that a failure as significant as the release of PHP 5.3.7 could happen without the dev team at least backing up the release of PHP 5.3.8 with an analysis of exactly what happened and exactly what measures were being considered so that it never happened again.  The problem here is not that a human made an error, the problem is that there were no measures in place to stop that error from happening, and so far there hasn’t been (or I haven’t seen) an official explanation of what measures will be put in place.</p>
+
+<p>My irritation aside, this blog article does not do a good job identifying exactly what part of the process is broken, and it does an even worse job presenting practical solutions.  The tone I set from the start of the article is more that of an offended user than someone interested in finding solutions, and it is certainly not inline with my original intentions.  The core devs are no doubt responsible for the process in which they work, but they are also the group of people that will ultimately fix this problem.</p>
+
+<p>I will be writing a follow-up to this article in the coming days that will hopefully address the concerns I have about PHP’s development process without so much visceral rhetoric.  Blog articles are a great way to present ideas to the public, but they are not a means to really enact change, so if I think my ideas can make a difference for the better, I will bring them to the PHP internals mailing list as well.</p>
+
+<hr />
+
+<p>PHP’s development process has been broken for a long time, and the failures of that process have swelled since the first ripples began to appear many years ago.  The process didn’t necessarily take a downward turn at any point; rather, it seems there was never really a sufficient or sustainable workflow from the start.  This is no surprise given the very fluid history of PHP though, and the lack of any sustainable processes may have even been one of the key things that allowed PHP to evolve so quickly into one of the most used programming languages in the world.  But that early success doesn’t make the PHP development process any less broken.</p>
+
+<p>Before I continue, I want to be perfectly clear: There are many reasons that people bring up for disliking PHP, and I will not be entertaining most of them here.  If you do not like PHP because of things such as an inconsistent API, seemingly half-hearted additions (e.g. object model or namespace support), or any of the other language-specific beefs that spring up whenever someone leaps on their e-soapbox, please move along.  This isn’t the post for you.  All things considered, I like PHP, and I think it is the best option for developing most of the applications that we see on the web today.</p>
+
+<h2 id="how-php-is-broken">How PHP is Broken</h2>
+<p>The serious problems – the ones that actually have long-term consequences, stem from the development process.</p>
+
+<p>Through most of PHP’s 16 year lifespan, it had a completely arbitrary release process.  When core devs felt like they wanted to push a release, they got together, patched up some of the code that had been contributed for the many weeks, months, or years since the previous release, and tossed it out into the wild.  The consequences of this still linger throughout the community (and the entire web) today: without any clear release planning, it was more efficient for organizations to leave their PHP versions un-upgraded than it was to incrementally upgrade their versions in a timely manner.</p>
+
+<p>In addition to no sensible release cycle, the way new features were discussed, approved, or rejected was largely informal, difficult to follow, and without any sufficient time constraints.  It was hard for anyone that didn’t follow the mailing list and wiki word for word, every day to have much of any idea about what was going on.</p>
+
+<p>PHP’s test coverage is not good.  To make matters worse, passing the existing unit tests is <strong>not a requirement for acceptance</strong> in the core.  Why even write the unit tests if someone can simply choose to ignore them when merging in their code?  This has to be the type of thing that <a href="http://sebastian-bergmann.de">Sebastian Bergmann</a> has nightmares about.</p>
+
+<p>Don’t worry though, just because it is acceptable to commit code that breaks the unit tests doesn’t mean that this will actually affect the stability of the releases, right?  I mean, the <strong>stable</strong> releases of PHP at least pass the tests that they do have, right? <strong>Wrong</strong>.  Surely you’ve all heard about the fiasco that was the PHP 5.3.7 release, but just in case you need a quick refresher:</p>
+
+<p>Eleven days ago, PHP 5.3.7 was <a href="http://www.php.net/archive/2011.php#id2011-08-18-1">released</a> as stable.  One day <strong>prior</strong> to the release, a major bug was <a href="https://bugs.php.net/bug.php?id=55439">reported</a> that identified an issue where using crypt() with md5 hashes was broken so badly that it was completely unusable across all platforms.  Four days after the stable release, PHP.net finally got around to officially <a href="http://www.php.net/archive/2011.php#id2011-08-22-1">announcing</a> the problem and a day after that they released PHP 5.3.8 with a fix.  To their credit, many of the core devs did get the <a href="https://plus.google.com/113641248237520845183/posts/g68d9RvRA1i">word</a> <a href="https://plus.google.com/104059770182664001692/posts/fYqq8HGHF8h">out</a> about this issue very quickly, but why it took four days to officially acknowledge the problem is completely beyond me.</p>
+
+<p>The delay in an official acknowledgement of this issue is certainly disturbing, but here’s the kicker: Even at only 70% code coverage, this bug <strong>was</strong> identified by the unit tests.  The tests that were in place to make sure that bugs like this couldn’t happen did their jobs – they failed when they were suppose to fail.  Without any automatic testing constraints in place for packaging releases, those failures went unnoticed, and a “stable” release of PHP with an application-breaking bug was released to the masses.  For this to happen, one of two things had to occur: someone released a stable version without running tests on newly added code, or, more likely, someone didn’t notice that there was a really important test failing because <strong>PHP 5.3 has <a href="http://gcov.php.net/viewer.php?version=PHP_5_3">192 failing unit tests</a></strong>!  What on earth is the point of writing unit tests when you consider it OK that some of the tests fail?  The acceptance of these failures is perhaps the most backward-thinking decision that I have ever seen the PHP dev team make.</p>
+
+<h2 id="how-this-can-be-fixed">How This Can Be Fixed</h2>
+<p>PHP has made huge progress in recent months in getting its development process into an acceptable state.  There is finally a detailed <a href="https://wiki.php.net/rfc/releaseprocess">release process</a> in place, so we know when to expect new code.  There is finally a simple and visible <a href="https://wiki.php.net/rfc/voting">voting process</a> on new feature proposals, so we know what to expect in those upcoming releases.  If the release of 5.3.7 is one of the worst blunders by the PHP dev team ever, then I’d say the addition of these two processes into the overall workflow is perhaps the single greatest decision they have ever made.  Only in time will we be able to see what affect these two additions will have, but already the community is seeing clearer communications and expectations when dealing with proposals and releases.</p>
+
+<p>Stop breaking tests.  Stop it.  Just, stop.  The argument that is immediately brought up whenever someone like me talks about an issue like this is along the lines of “nothing is stopping you from contributing”, but that isn’t at all relevant here.  Perhaps this argument would carry some weight if you were just considering the mountain of test failures that exist from the past, but that isn’t all we’re considering.  PHP 5.4 has 26 <strong>more</strong> failed unit tests than PHP 5.3, and PHP HEAD has more still.  Stop accepting code that isn’t unit tested or that breaks existing tests.</p>
+
+<p>Fix the broken tests.  I know I just said that maybe you could argue for more contributors in this case, but really that is only one side of the coin.  As a PHP user, it is <strong>not</strong> my responsibility to contribute to PHP.  That’s not how open source works, and it never will be how open source works.  But as a user of the software, I <strong>can</strong> be upset when it <strong>doesn’t work</strong>.  I can be even more upset when it doesn’t work due almost entirely to human negligence.</p>
+
+<p>As core developers, you <strong>do</strong> have a responsibility to personally write good code and to, as a group, manage the project in a responsible manner.  If you do both of these things – if you do things like writing well-tested code and don’t accept bush league crap like untested code (or worse, code that actually breaks tests), then I will be the first one to step to your defense whenever people get on your back.</p>
+
+<h2 id="more-contributors-is-not-the-solution">More Contributors is Not the Solution</h2>
+<p>Throwing new contributors at the project will not fix these problems.  If you want to expand the test coverage, improve the documentation, or do anything else that makes PHP better, then new contributors are the way to go.  However, falling back on cavalier attitudes like the ones behind the statement “nothing is stopping you from contributing” is both insulting and counter-productive.  It does absolutely nothing but decrease peoples’ desire to contribute even more.  As core developers, fixing the mistakes in the core development is your responsibility.  Just because you are volunteering your time doesn’t make this any less your responsibility.  Volunteering is the act of taking on responsibilities at no cost, and that is something you chose to do.  So, unless you’re throwing in the towel and walking away from the project, don’t insult the community by trying to offload your responsibilities (and failures) on us.</p>
+
+<p>Also, stop it with stupid reactions like <a href="http://twitter.com/PierreJoye/status/105690441105682432" title="Tweet says: Do not blame anyone if you did not run tests and report issues using RCs. Do not.">this</a> (Sorry to single you out, Pierre. You are certainly not the only one with this attitude).  If you are a core developer that helps to write and manage a project that powers websites and applications for billions of combined users, you don’t get the luxury of demanding that people remain silent when your team makes an absolutely egregious mistake like the PHP 5.3.7 release just because those people didn’t help you identify a mistake that your own processes <strong>should</strong> have identified.  Next time we moan about features taking too much time to develop, feel free to play the “contribute or stfu” card.</p>
+
+
+  </section>
+
+  <nav class="goback">
+    <a href="/">
+      <i class="icon icon-small"><svg viewBox="0 0 292.4 292.4"><path d="M223 5.4C219.4 1.8 215.1 0 210.1 0c-4.9 0-9.2 1.8-12.8 5.4L69.4 133.3c-3.6 3.6-5.4 7.9-5.4 12.8 0 4.9 1.8 9.2 5.4 12.8l127.9 127.9c3.6 3.6 7.9 5.4 12.8 5.4 4.9 0 9.2-1.8 12.8-5.4 3.6-3.6 5.4-7.9 5.4-12.8V18.3C228.4 13.3 226.6 9 223 5.4z"/></svg>
+</i>
+      Home
+    </a>
+  </nav>
+
+  
+  <aside class="posts">
+    <h1 class="modest">
+      <span class="dependent">If you liked this article, </span>
+      you may also like:
+    </h1>
+    <ul>
+      
+      
+      <li>
+        <i class="icon icon-small"><svg viewBox="0 0 292.4 292.4"><path d="M223 133.3L95.1 5.4C91.5 1.8 87.2 0 82.2 0c-5 0-9.2 1.8-12.8 5.4 -3.6 3.6-5.4 7.9-5.4 12.8v255.8c0 4.9 1.8 9.2 5.4 12.8 3.6 3.6 7.9 5.4 12.9 5.4 4.9 0 9.2-1.8 12.8-5.4l127.9-127.9c3.6-3.6 5.4-7.9 5.4-12.8C228.4 141.2 226.6 136.9 223 133.3z"/></svg>
+</i>
+        <a href="/2011/11/follow-up-how-php-is-broken-and-how-it-can-be-fixed.html">
+          <span class="date">2011-11-14</span>
+          Follow-up: How PHP is Broken and How It Can Be Fixed
+        </a>
+      </li>
+      
+      
+      
+      <li>
+        <i class="icon icon-small"><svg viewBox="0 0 292.4 292.4"><path d="M223 133.3L95.1 5.4C91.5 1.8 87.2 0 82.2 0c-5 0-9.2 1.8-12.8 5.4 -3.6 3.6-5.4 7.9-5.4 12.8v255.8c0 4.9 1.8 9.2 5.4 12.8 3.6 3.6 7.9 5.4 12.9 5.4 4.9 0 9.2-1.8 12.8-5.4l127.9-127.9c3.6-3.6 5.4-7.9 5.4-12.8C228.4 141.2 226.6 136.9 223 133.3z"/></svg>
+</i>
+        <a href="/2012/04/array-oriented-programming.html">
+          <span class="date">2012-04-01</span>
+          A New Paradigm Rises to Save the Modern Web
+        </a>
+      </li>
+      
+      
+      
+      <li>
+        <i class="icon icon-small"><svg viewBox="0 0 292.4 292.4"><path d="M223 133.3L95.1 5.4C91.5 1.8 87.2 0 82.2 0c-5 0-9.2 1.8-12.8 5.4 -3.6 3.6-5.4 7.9-5.4 12.8v255.8c0 4.9 1.8 9.2 5.4 12.8 3.6 3.6 7.9 5.4 12.9 5.4 4.9 0 9.2-1.8 12.8-5.4l127.9-127.9c3.6-3.6 5.4-7.9 5.4-12.8C228.4 141.2 226.6 136.9 223 133.3z"/></svg>
+</i>
+        <a href="/2010/05/php-integration-with-salesforce-crm.html">
+          <span class="date">2010-05-18</span>
+          PHP Integration with Salesforce CRM
+        </a>
+      </li>
+      
+      
+      
+      <li>
+        <i class="icon icon-small"><svg viewBox="0 0 292.4 292.4"><path d="M223 133.3L95.1 5.4C91.5 1.8 87.2 0 82.2 0c-5 0-9.2 1.8-12.8 5.4 -3.6 3.6-5.4 7.9-5.4 12.8v255.8c0 4.9 1.8 9.2 5.4 12.8 3.6 3.6 7.9 5.4 12.9 5.4 4.9 0 9.2-1.8 12.8-5.4l127.9-127.9c3.6-3.6 5.4-7.9 5.4-12.8C228.4 141.2 226.6 136.9 223 133.3z"/></svg>
+</i>
+        <a href="/2010/12/a-simple-alternative-to-global-registry-dependency.html">
+          <span class="date">2010-12-06</span>
+          A Simple Alternative to Global Registry Dependency
+        </a>
+      </li>
+      
+      
+      
+      <li>
+        <i class="icon icon-small"><svg viewBox="0 0 292.4 292.4"><path d="M223 133.3L95.1 5.4C91.5 1.8 87.2 0 82.2 0c-5 0-9.2 1.8-12.8 5.4 -3.6 3.6-5.4 7.9-5.4 12.8v255.8c0 4.9 1.8 9.2 5.4 12.8 3.6 3.6 7.9 5.4 12.9 5.4 4.9 0 9.2-1.8 12.8-5.4l127.9-127.9c3.6-3.6 5.4-7.9 5.4-12.8C228.4 141.2 226.6 136.9 223 133.3z"/></svg>
+</i>
+        <a href="/2010/05/the-best-models-are-easy-models.html">
+          <span class="date">2010-05-05</span>
+          The Best Models are Easy Models
+        </a>
+      </li>
+      
+      
+    </ul>
+  </aside>
+  
+
+  <aside class="author">
+    <img src="/img/headshot.png">
+    <span>
+      <em>Court Ewing</em> is a <em>software engineer</em> who is passionate
+      about the <em>open source community</em>, user experience design, and
+      other nerdy things.
+    </span>
+  </aside>
+
+  <aside class="social-icon-links">
+    <ul>
+      <li>
+        <a href="https://github.com/epixa">
+          <i class="icon"><svg viewBox="0 0 450 450"><path d="M409.1 114.6c-19.6-33.6-46.2-60.2-79.8-79.8C295.7 15.2 259.1 5.4 219.3 5.4c-39.8 0-76.5 9.8-110.1 29.4 -33.6 19.6-60.2 46.2-79.8 79.8C9.8 148.2 0 184.9 0 224.6c0 47.8 13.9 90.7 41.8 128.9 27.9 38.2 63.9 64.6 108.1 79.2 5.1 1 8.9 0.3 11.4-2 2.5-2.3 3.7-5.1 3.7-8.6 0-0.6 0-5.7-0.1-15.4 -0.1-9.7-0.1-18.2-0.1-25.4l-6.6 1.1c-4.2 0.8-9.5 1.1-15.8 1 -6.4-0.1-13-0.8-19.8-2 -6.9-1.2-13.2-4.1-19.1-8.6 -5.9-4.5-10.1-10.3-12.6-17.6l-2.9-6.6c-1.9-4.4-4.9-9.2-9-14.6 -4.1-5.3-8.2-8.9-12.4-10.8l-2-1.4c-1.3-1-2.6-2.1-3.7-3.4 -1.1-1.3-2-2.7-2.6-4 -0.6-1.3-0.1-2.4 1.4-3.3 1.5-0.9 4.3-1.3 8.3-1.3l5.7 0.9c3.8 0.8 8.5 3 14.1 6.9 5.6 3.8 10.2 8.8 13.8 14.8 4.4 7.8 9.7 13.8 15.8 17.8 6.2 4.1 12.4 6.1 18.7 6.1 6.3 0 11.7-0.5 16.3-1.4 4.6-1 8.8-2.4 12.8-4.3 1.7-12.8 6.4-22.6 14-29.4 -10.8-1.1-20.6-2.9-29.3-5.1 -8.7-2.3-17.6-6-26.8-11.1 -9.2-5.1-16.9-11.5-23-19.1 -6.1-7.6-11.1-17.6-15-30 -3.9-12.4-5.9-26.6-5.9-42.8 0-23 7.5-42.6 22.6-58.8 -7-17.3-6.4-36.7 2-58.2 5.5-1.7 13.7-0.4 24.6 3.9 10.9 4.3 18.8 8 23.8 11 5 3 9.1 5.6 12.1 7.7 17.7-4.9 36-7.4 54.8-7.4s37.1 2.5 54.8 7.4l10.8-6.8c7.4-4.6 16.2-8.8 26.3-12.6 10.1-3.8 17.8-4.9 23.1-3.1 8.6 21.5 9.3 40.9 2.3 58.2 15 16.2 22.6 35.8 22.6 58.8 0 16.2-2 30.5-5.9 43 -3.9 12.5-8.9 22.5-15.1 30 -6.2 7.5-13.9 13.9-23.1 19 -9.2 5.1-18.2 8.9-26.8 11.1 -8.7 2.3-18.4 4-29.3 5.1 9.9 8.6 14.8 22.1 14.8 40.5v60.2c0 3.4 1.2 6.3 3.6 8.6 2.4 2.3 6.1 3 11.3 2 44.2-14.7 80.2-41.1 108.1-79.2 27.9-38.2 41.8-81.1 41.8-128.9C438.5 184.9 428.7 148.2 409.1 114.6z"/></svg>
+</i> Github
+        </a>
+      </li>
+      <li>
+        <a href="https://twitter.com/courtewing">
+          <i class="icon"><svg viewBox="0 0 450 450"><path d="M450 85.7c-17.7 7.6-35.4 12.4-53.1 14.3 20-12 33.5-28.9 40.5-50.8 -18.3 10.8-37.8 18.3-58.5 22.3 -18.3-19.4-40.7-29.1-67.4-29.1 -25.5 0-47.2 9-65.2 27 -18 18-27 39.7-27 65.2 0 6.9 0.8 13.9 2.3 21.1 -37.7-1.9-73-11.4-106.1-28.4C82.5 110.2 54.4 87.5 31.4 59.1c-8.4 14.3-12.6 29.8-12.6 46.5 0 15.8 3.7 30.5 11.1 44 7.4 13.5 17.4 24.5 30 32.8 -14.8-0.6-28.7-4.5-41.7-11.7v1.1c0 22.3 7 41.8 21 58.7 14 16.8 31.6 27.5 53 31.8 -8 2.1-16.1 3.1-24.3 3.1 -5.3 0-11.1-0.5-17.4-1.4 5.9 18.5 16.8 33.6 32.5 45.5 15.8 11.9 33.7 18 53.7 18.4 -33.5 26.3-71.7 39.4-114.5 39.4 -8.2 0-15.6-0.4-22.3-1.1 42.8 27.6 90 41.4 141.6 41.4 32.7 0 63.5-5.2 92.2-15.6 28.7-10.4 53.3-24.3 73.7-41.7 20.4-17.4 37.9-37.4 52.7-60.1 14.8-22.7 25.7-46.3 33-70.9 7.2-24.7 10.8-49.3 10.8-74.1 0-5.3-0.1-9.3-0.3-12C421.8 120.2 437.2 104.3 450 85.7z"/></svg>
+</i> Twitter
+        </a>
+      </li>
+      <li>
+        <a href="https://www.linkedin.com/in/courtewing">
+          <i class="icon"><svg viewBox="0 0 438.5 438.5"><path d="M414.4 24.1C398.3 8 379 0 356.3 0H82.2C59.6 0 40.2 8 24.1 24.1 8 40.2 0 59.6 0 82.2v274.1c0 22.6 8 42 24.1 58.1 16.1 16.1 35.5 24.1 58.1 24.1h274.1c22.6 0 42-8 58.1-24.1 16.1-16.1 24.1-35.5 24.1-58.1V82.2C438.5 59.6 430.5 40.2 414.4 24.1zM133.6 367.2H67.7V169h66V367.2zM127.6 132.3c-6.9 6.6-15.9 9.9-27.1 9.9h-0.3c-10.8 0-19.6-3.3-26.4-9.9 -6.8-6.6-10.1-14.7-10.1-24.4 0-9.9 3.5-18.1 10.4-24.6 7-6.5 15.9-9.7 27-9.7 11 0 19.9 3.2 26.6 9.7 6.7 6.5 10.1 14.7 10.3 24.6C137.9 117.6 134.5 125.8 127.6 132.3zM370.9 367.2h-66v-105.9c0-29.9-11-44.8-33.1-44.8 -8.4 0-15.4 2.3-21.1 7 -5.7 4.7-10 10.3-12.8 17 -1.3 3.4-2 8.8-2 16v110.8h-66c0.6-119.5 0.6-185.6 0-198.1h66v28c13.9-21.7 33.6-32.5 59.1-32.5 22.8 0 41.2 7.5 55.1 22.6 13.9 15 20.8 37.2 20.8 66.5v113.6H370.9z"/></svg>
+</i> Linkedin
+        </a>
+      </li>
+      <li>
+        <a href="mailto:court@epixa.com">
+          <i class="icon"><svg viewBox="0 0 511.6 511.6"><path d="M498.2 68.2c-8.9-8.9-19.7-13.4-32.3-13.4H45.7c-12.6 0-23.3 4.5-32.3 13.4C4.5 77.2 0 87.9 0 100.5v310.6c0 12.6 4.5 23.3 13.4 32.3 8.9 9 19.7 13.4 32.3 13.4h420.3c12.6 0 23.3-4.5 32.3-13.4 8.9-8.9 13.4-19.7 13.4-32.3V100.5C511.6 87.9 507.2 77.2 498.2 68.2zM475.1 411.1c0 2.5-0.9 4.6-2.7 6.4 -1.8 1.8-3.9 2.7-6.4 2.7H45.7c-2.5 0-4.6-0.9-6.4-2.7 -1.8-1.8-2.7-3.9-2.7-6.4V191.9c6.1 6.9 12.7 13.1 19.7 18.8 51 39.2 91.6 71.4 121.6 96.5 9.7 8.2 17.6 14.6 23.7 19.1 6.1 4.6 14.3 9.2 24.7 13.8 10.4 4.7 20.1 7 29.3 7h0.3 0.3c9.1 0 18.9-2.3 29.3-7 10.4-4.7 18.6-9.3 24.7-13.8 6.1-4.6 14-10.9 23.7-19.1 30.1-25.1 70.6-57.3 121.6-96.5 7-5.7 13.6-12 19.7-18.8V411.1L475.1 411.1zM475.1 107.9v3.1c0 11.2-4.4 23.7-13.3 37.5 -8.9 13.8-18.4 24.8-28.7 33 -36.7 28.9-74.9 59.1-114.5 90.5 -1.1 1-4.5 3.8-10 8.4 -5.5 4.7-9.9 8.2-13.1 10.7 -3.2 2.5-7.5 5.5-12.7 9 -5.2 3.5-10 6.1-14.4 7.9 -4.4 1.7-8.5 2.6-12.3 2.6h-0.3 -0.3c-3.8 0-7.9-0.9-12.3-2.6 -4.4-1.7-9.2-4.3-14.4-7.9 -5.2-3.5-9.5-6.5-12.7-9 -3.2-2.5-7.6-6-13.1-10.7 -5.5-4.7-8.9-7.5-10-8.4 -39.6-31.4-77.7-61.6-114.5-90.5 -28-22.1-42-49.1-42-81.1 0-2.5 0.9-4.6 2.7-6.4 1.8-1.8 3.9-2.7 6.4-2.7h420.3c1.5 0.9 2.9 1.1 4 0.7 1.1-0.4 2 0.3 2.6 2.1 0.6 1.8 1.1 2.7 1.6 2.6 0.5-0.1 0.8 1.1 0.9 3.6 0.1 2.5 0.1 3.7 0.1 3.7V107.9L475.1 107.9z"/></svg>
+</i> Email
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+</article>
+
+
+    </div>
+
+    <footer class="content">
+      <div class="footnote">
+        Icons by <a href="http://www.flaticon.com/authors/dave-gandy" target="_blank">Dave Gandy</a>
+        - <a href="http://creativecommons.org/licenses/by/3.0/" target="_blank">CC BY 3.0</a>
+      </div>
+    </footer>
+
+  </body>
+
+</html>
