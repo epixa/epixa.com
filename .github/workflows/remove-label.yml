@@ -22,5 +22,5 @@ jobs:
               }
             }
           projectid: "PVT_kwHN0jbOABe9dA"
-          contentid: ${{ github.event.issue.node_id }}
+          itemid: ${{ github.event.issue.node_id }}
           GITHUB_TOKEN: ${{ secrets.TMP_ACCESS }}
