@@ -17,8 +17,8 @@ jobs:
           headers: '{"GraphQL-Features": "projects_next_graphql"}'
           query: |
             mutation remove_from_project($projectid:ID!,$itemid:ID!) {
-               deleteProjectV2Item(input:{projectId:$projectid itemId:$itemid}) {
-                clientMutationId
+              deleteProjectV2Item(input:{projectId:$projectid itemId:$itemid}) {
+                deletedItemId
               }
             }
           projectid: "PVT_kwHN0jbOABe9dA"
