@@ -1,0 +1,26 @@
+name: Test workflow to add issues to a project
+
+on:
+  issues:
+    types:
+      - labeled
+
+jobs:
+  add-to-project:
+    runs-on: ubuntu-latest
+    if: |
+      github.event.label.name == 'enhancement' 
+    steps:
+      - uses: octokit/graphql-action@v2.x
+        id: add_to_project
+        with:
+          headers: '{"GraphQL-Features": "projects_next_graphql"}'
+          query: |
+            mutation add_to_project($projectid:ID!,$contentid:ID!) {
+               addProjectV2ItemById(input:{projectId:$projectid contentId:$contentid}) {
+                clientMutationId
+              }
+             }
+          projectid: "PVT_kwHN0jbOABe9dA"
+          contentid: ${{ github.event.issue.node_id }}
+          GITHUB_TOKEN: ${{ secrets.INGEST_PROJECT_ASSIGNER_TOKEN }}
