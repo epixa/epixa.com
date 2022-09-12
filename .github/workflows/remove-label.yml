@@ -3,7 +3,7 @@ name: Test workflow to remove issues from a project
 on:
   issues:
     types:
-      - labeled
+      - unlabeled
 
 jobs:
   remove-from-project:
