@@ -1,0 +1,26 @@
+name: Test workflow to remove issues from a project
+
+on:
+  issues:
+    types:
+      - labeled
+
+jobs:
+  remove-from-project:
+    runs-on: ubuntu-latest
+    if: |
+      github.event.label.name == 'enhancement' 
+    steps:
+      - uses: octokit/graphql-action@v2.x
+        id: remove_from_project
+        with:
+          headers: '{"GraphQL-Features": "projects_next_graphql"}'
+          query: |
+            mutation remove_from_project($projectid:ID!,$itemid:ID!) {
+               deleteProjectV2Item(input:{projectId:$projectid itemId:$itemid}) {
+                clientMutationId
+              }
+            }
+          projectid: "PVT_kwHN0jbOABe9dA"
+          contentid: ${{ github.event.issue.node_id }}
+          GITHUB_TOKEN: ${{ secrets.TMP_ACCESS }}
