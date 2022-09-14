@@ -27,9 +27,3 @@ jobs:
               }
             }' -f project=$PROJECT_ID -f issue=$ISSUE_ID --jq '.data.addProjectV2ItemById.item.id')"
 
-          gh api graphql -f query='
-            mutation remove_from_project($projectid:ID!,$itemid:ID!) {
-              deleteProjectV2Item(input: {projectId: $project itemId: item}) {
-                deletedItemId
-              }
-            }' -f project=$PROJECT_ID -f item=$item_id
