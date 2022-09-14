@@ -18,11 +18,9 @@ jobs:
           query: |
             mutation remove_from_project($projectid:ID!,$itemid:ID!) {
               addProjectV2ItemById(input:{projectId:$projectid contentId:$itemid}) {
-                item: {
-                  id: itemId
-                }
+                item
               }
-              deleteProjectV2Item(input:{projectId:$projectid itemId:itemId}) {
+              deleteProjectV2Item(input:{projectId:$projectid itemId:item.id}) {
                 deletedItemId
               }
             }
