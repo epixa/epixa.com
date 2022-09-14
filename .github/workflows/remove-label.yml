@@ -11,19 +11,25 @@ jobs:
     if: |
       github.event.label.name == 'enhancement' 
     steps:
-      - uses: octokit/graphql-action@v2.x
-        id: remove_from_project
-        with:
-          headers: '{"GraphQL-Features": "projects_next_graphql"}'
-          query: |
-            mutation remove_from_project($projectid:ID!,$itemid:ID!) {
-              addProjectV2ItemById(input:{projectId:$projectid contentId:$itemid}) {
-                item
+      - name: Get issue id from project
+        id: get_issue_id_from_project
+        env:
+          GITHUB_TOKEN: ${{ secrets.TMP_ACCESS }}
+          ISSUE_ID: ${{ github.event.issue.node_id }}
+          PROJECT_ID: "PVT_kwHN0jbOABe9dA"
+        run: |
+          item_id="$( gh api graphql -f query='
+            mutation($project:ID!, $pr:ID!) {
+              addProjectV2ItemById(input: {projectId: $project, contentId: $pr}) {
+                item {
+                  id
+                }
               }
-              deleteProjectV2Item(input:{projectId:$projectid itemId:item.id}) {
+            }' -f project=$PROJECT_ID -f issue=$ISSUE_ID --jq '.data.addProjectV2ItemById.item.id')"
+
+          gh api graphql -f query='
+            mutation remove_from_project($projectid:ID!,$itemid:ID!) {
+              deleteProjectV2Item(input: {projectId: $project itemId: item}) {
                 deletedItemId
               }
-            }
-          projectid: "PVT_kwHN0jbOABe9dA"
-          itemid: ${{ github.event.issue.node_id }}
-          GITHUB_TOKEN: ${{ secrets.TMP_ACCESS }}
+            }' -f project=$PROJECT_ID -f item=$item_id
