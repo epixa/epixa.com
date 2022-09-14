@@ -18,6 +18,9 @@ jobs:
           ISSUE_ID: ${{ github.event.issue.node_id }}
           PROJECT_ID: "PVT_kwHN0jbOABe9dA"
         run: |
+          # The global issue id is not the same as the project-specific issue id, but there's
+          # no API for retrieving an individual project issue, so we hack around that
+          # limitation by using the idempotent addProjectV2ItemById operation
           item_id="$(gh api graphql -f query='
             mutation($project:ID!,$issue:ID!) {
               addProjectV2ItemById(input: {projectId: $project, contentId: $issue}) {
