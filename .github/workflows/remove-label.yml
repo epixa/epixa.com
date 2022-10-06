@@ -11,30 +11,48 @@ jobs:
     if: |
       github.event.label.name == 'enhancement' 
     steps:
-      - name: Get issue id from project
-        id: get_issue_id_from_project
+      - name: Remove issue from projects
+        id: remove_issue_from_projects
         env:
           GITHUB_TOKEN: ${{ secrets.TMP_ACCESS }}
           ISSUE_ID: ${{ github.event.issue.node_id }}
-          PROJECT_ID: "PVT_kwHN0jbOABe9dA"
+          PLANNING_PROJECT_ID: "PVT_kwHN0jbOABe9dA"
+          SDH_PROJECT_ID: "PVT_kwHN0jbOABuDBg"
         run: |
           # The global issue id is not the same as the project-specific issue id, but there's
           # no API for retrieving an individual project issue, so we hack around that
           # limitation by using the idempotent addProjectV2ItemById operation
-          item_id="$(gh api graphql -f query='
+
+          planning_item_id="$(gh api graphql -f query='
             mutation($project:ID!,$issue:ID!) {
               addProjectV2ItemById(input: {projectId: $project, contentId: $issue}) {
                 item {
                   id
                 }
               }
-            }' -f project=$PROJECT_ID -f issue=$ISSUE_ID --jq '.data.addProjectV2ItemById.item.id')"
+            }' -f project=$PLANNING_PROJECT_ID -f issue=$ISSUE_ID --jq '.data.addProjectV2ItemById.item.id')"
             
           gh api graphql -f query='
             mutation($project:ID!,$item:ID!) {
               deleteProjectV2Item(input: {projectId: $project itemId: $item}) {
                 deletedItemId
               }
-            }' -f project=$PROJECT_ID -f item=$item_id
+            }' -f project=$PLANNING_PROJECT_ID -f item=$planning_item_id
+            
+          sdh_item_id="$(gh api graphql -f query='
+            mutation($project:ID!,$issue:ID!) {
+              addProjectV2ItemById(input: {projectId: $project, contentId: $issue}) {
+                item {
+                  id
+                }
+              }
+            }' -f project=$SDH_PROJECT_ID -f issue=$ISSUE_ID --jq '.data.addProjectV2ItemById.item.id')"
+            
+          gh api graphql -f query='
+            mutation($project:ID!,$item:ID!) {
+              deleteProjectV2Item(input: {projectId: $project itemId: $item}) {
+                deletedItemId
+              }
+            }' -f project=$SDH_PROJECT_ID -f item=$sdh_item_id
             
             
