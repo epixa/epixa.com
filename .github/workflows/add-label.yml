@@ -16,15 +16,15 @@ jobs:
         with:
           headers: '{"GraphQL-Features": "projects_next_graphql"}'
           query: |
-            mutation add_to_project($planningProjectId:ID!, $sdhProjectId:ID!, $contentid:ID!) {
-              planningProject: addProjectV2ItemById(input:{projectId:$planningProjectId contentId:$contentid}) {
+            mutation add_to_project($planning_project_id:ID!, $sdh_project_id:ID!, $content_id:ID!) {
+              planningProject: addProjectV2ItemById(input:{projectId:$planning_project_id contentId:$content_id}) {
                 clientMutationId
               }
-              sdhProject: addProjectV2ItemById(input:{projectId:$sdhProjectId contentId:$contentid}) {
+              sdhProject: addProjectV2ItemById(input:{projectId:$sdh_project_id contentId:$content_id}) {
                 clientMutationId
               }
             }
-          planningProjectId: "PVT_kwHN0jbOABe9dA"
-          sdhProjectId: "PVT_kwHN0jbOABuDBg"
-          contentid: ${{ github.event.issue.node_id }}
+          planning_project_id: "PVT_kwHN0jbOABe9dA"
+          sdh_project_id: "PVT_kwHN0jbOABuDBg"
+          content_id: ${{ github.event.issue.node_id }}
           GITHUB_TOKEN: ${{ secrets.TMP_ACCESS }}
